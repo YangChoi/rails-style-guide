@@ -14,6 +14,7 @@
 
 * [Chinese Simplified](https://github.com/JuanitoFatas/rails-style-guide/blob/master/README-zhCN.md)
 * [Chinese Traditional](https://github.com/JuanitoFatas/rails-style-guide/blob/master/README-zhTW.md)
+* [German](https://github.com/arbox/de-rails-style-guide/blob/master/README-deDE.md)
 * [Japanese](https://github.com/satour/rails-style-guide/blob/master/README-jaJA.md)
 * [Russian](https://github.com/arbox/rails-style-guide/blob/master/README-ruRU.md)
 * [Turkish](https://github.com/tolgaavci/rails-style-guide/blob/master/README-trTR.md)
@@ -611,6 +612,35 @@
 
   # 좋은 예
   User.where.not(id: id)
+  ```
+
+* <a name="squished-heredocs"></a>
+  `find_by_sql`처럼 메소드에서 명시적인 쿼리를 작성할 때, `squish`와 함께
+  히어독을 사용한다. 이렇게 하면, SQL을 줄바꿈과 들여쓰기로 읽기 쉬운 형식으로
+  할 수 있을 뿐만 아니라, GitHub, Atom, RubyMine을 포함한 많은 툴에서 구문
+  하일라이트를 해준다.
+<sup>[[link](#squished-heredocs)]</sup>
+
+  ```Ruby
+  User.find_by_sql(<<SQL.squish)
+    SELECT
+      users.id, accounts.plan
+    FROM
+      users
+    INNER JOIN
+      accounts
+    ON
+      accounts.user_id = users.id
+    # further complexities...
+  SQL
+  ```
+
+  [`String#squish`](http://apidock.com/rails/String/squish)는 들여쓰기와
+  줄바꿈을 지워준다. 그래서 서버 로그에서 다음과 같이 보이지 않고 유려한
+  SQL 문자열을 표시할 수 있다.
+
+  ```
+  SELECT\n    users.id, accounts.plan\n  FROM\n    users\n  INNER JOIN\n    acounts\n  ON\n    accounts.user_id = users.id
   ```
 
 ## 마이그레이션(Migrations)

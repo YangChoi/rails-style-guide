@@ -17,9 +17,11 @@ Translations of the guide are available in the following languages:
 
 * [Chinese Simplified](https://github.com/JuanitoFatas/rails-style-guide/blob/master/README-zhCN.md)
 * [Chinese Traditional](https://github.com/JuanitoFatas/rails-style-guide/blob/master/README-zhTW.md)
+* [German](https://github.com/arbox/de-rails-style-guide/blob/master/README-deDE.md)
 * [Japanese](https://github.com/satour/rails-style-guide/blob/master/README-jaJA.md)
 * [Russian](https://github.com/arbox/rails-style-guide/blob/master/README-ruRU.md)
 * [Turkish](https://github.com/tolgaavci/rails-style-guide/blob/master/README-trTR.md)
+* [Korean](https://github.com/pureugong/rails-style-guide/blob/master/README-koKR.md)
 
 # The Rails Style Guide
 
@@ -655,6 +657,33 @@ when you need to retrieve a single record by some attributes.
 
   # good
   User.where.not(id: id)
+  ```
+* <a name="squished-heredocs"></a>
+  When specifying an explicit query in a method such as `find_by_sql`, use
+  heredocs with `squish`. This allows you to legibly format the SQL with
+  line breaks and indentations, while supporting syntax highlighting in many
+  tools (including GitHub, Atom, and RubyMine).
+<sup>[[link](#squished-heredocs)]</sup>
+
+  ```Ruby
+  User.find_by_sql(<<SQL.squish)
+    SELECT
+      users.id, accounts.plan
+    FROM
+      users
+    INNER JOIN
+      accounts
+    ON
+      accounts.user_id = users.id
+    # further complexities...
+  SQL
+  ```
+
+  [`String#squish`](http://apidock.com/rails/String/squish) removes the indentation and newline characters so that your server
+  log shows a fluid string of SQL rather than something like this:
+
+  ```
+  SELECT\n    users.id, accounts.plan\n  FROM\n    users\n  INNER JOIN\n    acounts\n  ON\n    accounts.user_id = users.id
   ```
 
 ## Migrations
