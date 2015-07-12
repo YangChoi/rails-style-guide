@@ -158,6 +158,19 @@
   ```
 
 * <a name="namespaced-routes"></a>
+  1 단계 이상의 중첩 라우트가 필요할 때 `shallow: true` 옵션을 사용한다. 이는
+  사용자를 `posts/1/comments/5/versions/7/edit`같은 긴 url에서 구하고
+  `edit_post_comment_version`같은 긴 url 핼퍼를 사용하지 않아도 되게 한다.
+
+  ```Ruby
+  resources :posts, shallow: true do
+    resources :comments do
+      resources :versions
+    end
+  end
+  ```
+
+* <a name="namespaced-routes"></a>
   그룹과 관련된 액션에 대해서는 `namespace`를 사용해 라우트를 작성한다.
 <sup>[[link](#namespaced-routes)]</sup>
 
@@ -943,7 +956,7 @@
 
 * <a name="tz-config"></a>
   `application.rb`에 타임존을 적절히 설정한다.
-<sup>[[link](#time-now)]</sup>
+<sup>[[link](#tz-config)]</sup>
 
   ```Ruby
   config.time_zone = 'Eastern European Time'
