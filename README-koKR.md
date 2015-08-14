@@ -43,7 +43,6 @@
 * [메일러(Mailers)](#mailers)
 * [시간(Time)](#time)
 * [번들러(Bundler)](#bundler)
-* [문제가 있는 젬(Flawed Gems)](#flawed-gems)
 * [프로세스 관리(Managing processes)](#managing-processes)
 
 ## 설정(Configuration)
@@ -1031,25 +1030,6 @@
   `Gemfile.lock` 파일은 버전 관리에 포함한다.
   이 파일은 무작위로 생성된 것이 아니므로, 같은 프로젝트를 진행하는 여러 개발자들이 `bundle install` 명령으로 같은 버전의 젬을 설치할 수 있게 도와준다.
 <sup>[[link](#gemfile-lock)]</sup>
-
-## Flawed Gems
-<a name="flawed-gems"></a>
-
-아래의 젬들은 문제가 있거나 다른 젬들에 의해 대체되었다.
-프로젝트에서 사용하지 않을 것을 권장한다.
-
-* [rmagick](http://rmagick.rubyforge.org/) - 메모리 소모로 악명이 높다.
-  [minimagick](https://github.com/minimagick/minimagick)을 대신 사용한다.
-
-* [autotest](http://www.zenspider.com/ZSS/Products/ZenTest/) - 파일 수정을 추적해 자동으로 테스트를 실행해주는 오래된 도구이다.
-  [guard](https://github.com/guard/guard)와 
-  [watchr](https://github.com/mynyml/watchr)을 사용한다.
-
-* [rcov](https://github.com/relevance/rcov) - 루비 1.9와 호환되지 않는 코드 커버리지 도구로 [SimpleCov](https://github.com/colszowka/simplecov)를 대신 사용한다.
-
-* [therubyracer](https://github.com/cowboyd/therubyracer) - 메모리 소모가 크기 때문에 `node.js`를 대신 사용하는 것이 좋다.
-
-이 목록은 업데이트중이다. 유명하지만 문제가 있는 젬을 알고 있다면 저자에게 알려주기 바란다.
 
 ## 프로세스 관리(Managing processes)
 <a name="managing-processes"></a>
