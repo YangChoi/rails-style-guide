@@ -753,8 +753,8 @@
 
 * <a name="organize-locale-files"></a>
   뷰에서 사용되는 엑티브 레코드 속성들에 대한 번역은 분리한다.
-  `models` 디렉터리에 모델을 위한 로케일 파일들을 저장하고,
-  뷰에서 사용하는 텍스트는 `views`에 저장한다.
+  `locales/models` 디렉터리에 모델을 위한 로케일 파일들을 저장하고,
+  뷰에서 사용하는 텍스트는 `locales/views`에 저장한다.
 <sup>[[link](#organize-locale-files)]</sup>
 
   * 로케일(locale) 파일들을 적절한 위치에 저장하기 위해 디렉터리를 추가로 만들었다면, 이 파일들을 읽어들일 수 있도록 `application.rb` 파일에 설정해야 한다.
