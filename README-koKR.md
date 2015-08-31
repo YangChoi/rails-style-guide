@@ -430,32 +430,6 @@
   end
   ```
 
-  이렇게 정의된 스코프는 이름 있는 스코프와 마찬가지 방법으로 연결(chain)될 수 없다.
-
-  ```Ruby
-  # unchainable
-  class User < ActiveRecord::Base
-    def User.old
-      where('age > ?', 80)
-    end
-
-    def User.heavy
-      where('weight > ?', 200)
-    end
-  end
-  ```
-
-
-  예를 들어 여기서 `old`와 `heavy`는 따로 사용할 수 있지만, `User.old.heavy`와 같이 사용할 수는 없다. 이 스코프들을 연결하고 싶다면 다음과 같이 작성한다.
-
-  ```Ruby
-  # chainable
-  class User < ActiveRecord::Base
-    scope :old, -> { where('age > 60') }
-    scope :heavy, -> { where('weight > 200') }
-  end
-  ```
-
 * <a name="beware-update-attribute"></a>
   [`update_attribute`](http://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update_attribute) 메소드의 작동 방법에 대하여 이해해야한다.
   (`update_attributes`와는 달리) 모델 validation를 실행하지 않기 때문에 모델의 상태에 오류가 발생할 수 있다.
