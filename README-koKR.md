@@ -314,7 +314,7 @@ render status: :forbidden
   [RailsCast on the subject](http://railscasts.com/episodes/326-activeattr).
 
 * <a name="model-business-logic"></a>
-  비즈니스 영역(business domain)에서 어떤 의미를 가지고 있지 않는 한, HTML을 생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 매서드를 모델에서 사용하지 말 것. 그러한 매서드들은 대부분 화면에서만 사용되기 때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과 데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
+  비즈니스 영역(business domain)에서 어떤 의미를 가지고 있지 않는 한, HTML을 생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 매소드를 모델에서 사용하지 말 것. 그러한 매소드들은 대부분 화면에서만 사용되기 때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과 데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
 <sup>[[link](#model-business-logic)]</sup>
 
 
