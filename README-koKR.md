@@ -8,7 +8,7 @@
 
 여기서 작성된 일부 예제들은 레일즈 4.0 이상의 버전에서만 적용될 수 있으니 참고하세요.
 
-[Transmuter](https://github.com/TechnoGate/transmuter)를 사용해서 이 가이드를 PDF나 HTML형식으로 변환할 수 있습니다.
+[Pandoc](http://pandoc.org/)를 사용해서 이 가이드를 PDF나 HTML형식으로 변환할 수 있습니다.
 
 이 가이드는 다음 언어들로 번역되어있습니다.
 
@@ -33,6 +33,7 @@
 * [설정(configuration)](#configuration)
 * [라우팅(Routing)](#routing)
 * [컨트롤러(Controllers)](#controllers)
+  * [랜더링(Rendering)](#rendering)
 * [모델(Models)](#models)
   * [엑티브 레코드(ActiveRecord)](#activerecord)
   * [엑티브 레코드 쿼리(ActiveRecord Queries)](#activerecord-queries)
@@ -41,6 +42,7 @@
 * [국제화(Internationalization)](#internationalization)
 * [에셋(Assets)](#assets)
 * [메일러(Mailers)](#mailers)
+* [액티브 서포트 코어 확장(Active Support Core Extensions)](#active-support-core-extensions)
 * [시간(Time)](#time)
 * [번들러(Bundler)](#bundler)
 * [프로세스 관리(Managing processes)](#managing-processes)
@@ -210,6 +212,73 @@
   하나의 컨트롤러와 하나의 뷰 사이에서 두 개 이상의 인스턴스 변수들을 공유하지 않는다.
 <sup>[[link](#shared-instance-variables)]</sup>
 
+### 랜더링(Rendering)
+
+* <a name="inline-rendering"></a>
+  인라인(inline) 랜더링보다는 템플릿을 사용한다.
+<sup>[[link](#inline-rendering)]</sup>
+
+```Ruby
+# 나쁜 예
+class ProductsController < ApplicationController
+  def index
+    render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>", type: :erb
+  end
+end
+
+# 좋은 예 
+## app/views/products/index.html.erb
+<%= render partial: 'product', collection: products %>
+
+## app/views/products/_product.html.erb
+<p><%= product.name %></p>
+<p><%= product.price %></p>
+
+## app/controllers/foo_controller.rb
+class ProductsController < ApplicationController
+  def index
+    render :index
+  end
+end
+```
+
+* <a name="plain-text-rendering"></a>
+  `render text:`보다 `render plain:`을 사용할 것
+<sup>[[link](#plain-text-rendering)]</sup>
+
+```Ruby
+# 나쁜 예 - MIME 타입을 `text/html`로 설정
+...
+render text: 'Ruby!'
+...
+
+# 나쁜 예 - 정확한 MIME 타입을 선언해야한다.
+...
+render text: 'Ruby!', content_type: 'text/plain'
+...
+
+# 좋은 예 - 간결하고 정확함
+...
+render plain: 'Ruby!'
+...
+```
+
+* <a name="http-status-code-symbols"></a>
+  숫자로 이루어진 HTTP상태 코드보단 [corresponding symbols](https://gist.github.com/mlanett/a31c340b132ddefa9cca)을 사용하면, 잘 알려지지 않은 HTTP 상태코드가 "magic" 숫자처럼 보이지 않고 그 의미를 명확하게 알 수 있다.
+<sup>[[link](#http-status-code-symbols)]</sup>
+
+```Ruby
+# 나쁜 예
+...
+render status: 500
+...
+
+# 좋은 예
+...
+render status: :forbidden
+...
+```
+
 ## Models
 
 * <a name="model-classes"></a>
@@ -243,6 +312,11 @@
 
   더 많은 예제는 다음 링크를 참조.
   [RailsCast on the subject](http://railscasts.com/episodes/326-activeattr).
+
+* <a name="model-business-logic"></a>
+  비즈니스 영역(business domain)에서 어떤 의미를 가지고 있지 않는 한, HTML을 생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 매소드를 모델에서 사용하지 말 것. 그러한 매소드들은 대부분 화면에서만 사용되기 때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과 데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
+<sup>[[link](#model-business-logic)]</sup>
+
 
 ### 엑티브 레코드(ActiveRecord)
 <a name="activerecord"></a>
@@ -512,6 +586,21 @@
     fail "Cannot delete super admin." if super_admin?
   end
   ```
+* <a name="has_many-has_one-dependent-option"></a>
+  `has_many`와 `has_one` 관계에 대해서는 `dependent` 설정을 하자.
+<sup>[[link](#has_many-has_one-dependent-option)]</sup>
+
+  ```Ruby
+  # 나쁜 예
+  class Post < ActiveRecord::Base
+    has_many :comments
+  end
+
+  # 좋은 예
+  class Post < ActiveRecord::Base
+    has_many :comments, dependent: :destroy
+  end
+  ```
 
 ### 엑티브 레코드 쿼리(ActiveRecord Queries)
 <a name="activerecord-queries"></a>
@@ -560,32 +649,18 @@
   ```
 
 * <a name="find_by"></a>
-  특정 속성을 통해 하나의 값을 조회할 때는 `where`보단 `find_by`를 사용한다.
+  특정 속성을 통해 하나의 값을 조회할 때는 `where`과 `find_by_attribute`보단 `find_by`를 사용한다.
 <sup>[[link](#find_by)]</sup>
 
   ```Ruby
   # 나쁜 예
   User.where(first_name: 'Bruce', last_name: 'Wayne').first
 
+  # 나쁜 예
+  User.find_by_first_name_and_last_name('Bruce', 'Wayne')
+
   # 좋은 예
   User.find_by(first_name: 'Bruce', last_name: 'Wayne')
-  ```
-
-* <a name="find_each"></a>
-  많은 레코드에 대해 어떤 작업을 해야한다면 `find_each`를 사용한다.
-<sup>[[link](#find_each)]</sup>
-
-  ```Ruby
-  # 나쁜 예 - 모든 데이터를 한 번에 읽어온다.
-  # users 테이블이 수천개의 행을 가지고 있다면 매우 비효율적이다.
-  User.all.each do |user|
-    NewsMailer.weekly(user).deliver_now
-  end
-
-  # 좋은 예 - 배치(batch) 안에서 레코드를 가져온다.
-  User.find_each do |user|
-    NewsMailer.weekly(user).deliver_now
-  end
   ```
 
 * <a name="where-not"></a>
@@ -923,6 +998,80 @@
   이는 페이지 로딩을 지연시키고, 여러 메일을 동시에 발송할 때 타임아웃이 될 수도 있다.
   이메일 전송은 [sidekiq](https://github.com/mperham/sidekiq)과 같은 백그라운드 작업을 지원하는 젬을 사용해 이루어져야 한다.
 <sup>[[link](#background-email)]</sup>
+
+## 액티브 서포트 코어 확장(Active Support Core Extensions)
+
+* <a name="try-bang"></a>
+  `ActiveSupport#try!`보단 루비 2.3의 안전한 내비게이션 연산자인 `&.`을 사용하자
+<sup>[[link](#try-bang)]</sup>
+
+```ruby
+# 나쁜 예 
+obj.try! :fly
+
+# 좋은 예
+obj&.fly
+```
+
+* <a name="active_support_aliases"></a>
+  `ActiveSupport`보다 루비의 표준 라이브러리를 사용하자.
+<sup>[[link](#active_support_aliases)]</sup>
+
+```ruby
+# 나쁜 예
+'the day'.starts_with? 'th'
+'the day'.ends_with? 'ay'
+
+# 좋은 예
+'the day'.start_with? 'th'
+'the day'.end_with? 'ay'
+```
+
+* <a name="active_support_extensions"></a>
+  흔하지 않은 ActiveSupport 확장보단 루비 표준 라이브러리를 사용하자.
+<sup>[[link](#active_support_extensions)]</sup>
+
+```ruby
+# 나쁜 예
+(1..50).to_a.forty_two
+1.in? [1, 2]
+'day'.in? 'the day'
+
+# 좋은 예
+(1..50).to_a[41]
+[1, 2].include? 1
+'the day'.include? 'day'
+```
+
+* <a name="inquiry"></a>
+  ActiveSupport의 `Array#inquiry`, `Numeric#inquiry` 그리고 `String#inquiry` 보다는 루비의 비교 연산자를 사용하자.
+<sup>[[link](#inquiry)]</sup>
+
+```ruby
+# 나쁜 예 - String#inquiry
+ruby = 'two'.inquiry
+ruby.two?
+
+# 좋은 예
+ruby = 'two'
+ruby == 'two'
+
+# 나쁜 예 - Array#inquiry
+pets = %w(cat dog).inquiry
+pets.gopher?
+
+# 좋은 예
+pets = %w(cat dog)
+pets.include? 'cat'
+
+# 나쁜 예 - Numeric#inquiry
+0.positive?
+0.negative?
+
+# 좋은 예
+0 > 0
+0 < 0
+```
 
 ## 시간(Time)
 <a name="time"></a>
