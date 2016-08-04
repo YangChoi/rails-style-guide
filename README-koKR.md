@@ -8,7 +8,7 @@
 커뮤니티 기반 [루비 코딩 스타일 가이드](https://github.com/bbatsov/ruby-style-guide)를
 보완하는 가이드입니다.
 
-일부 예제는 레일스 4.0 이상의 버전에서만 적용될 수 있습니다.
+일부 예제는 레일스 4.0 이상의 버전에서만 적용됩니다.
 
 [Pandoc](http://pandoc.org/)를 사용해서 이 가이드를 PDF나 HTML형식으로 변환할
 수 있습니다.
@@ -36,8 +36,7 @@
 
 이 모든 규칙들이 하루 아침에 만들어지지는 않았습니다. 대부분의 규칙은 저의
 소프트웨어 엔지니어로서의 수많은 경험과 레일스 커뮤니티의 피드백과 제안을
-비롯해 높은 평가를 받고 있는 레일스 프로그래밍 리소스들을 기반으로
-만들어졌습니다.
+비롯해 높은 평가를 받고 있는 레일스 프로그래밍 리소스를 기반으로 만들어졌습니다.
 
 ## 목차
 
@@ -62,14 +61,14 @@
 <a name="configuration"></a>
 
 * <a name="config-initializers"></a>
-  사용자정의 초기 설정은 `config/initializers`에 둔다. 여기에 있는 코드들은
+  사용자 정의 초기 설정은 `config/initializers`에 둔다. 여기에 있는 코드들은
   애플리케이션이 처음 구동될 때 실행된다.
 <sup>[[link](#config-initializers)]</sup>
 
 * <a name="gem-initializers"></a>
-  각각의 젬(gem)에 대해 초기 설정 파일을 따로 만들고, 젬과 같은 이름을 사용하여
-  작성한다. 예를 들어 CarrierWave에 대한 설정은 `carrierwave.rb`에 저장하고,
-  Active Admin에 대한 설정은 `active_admin.rb`에 저장한다.
+  각각의 젬(gem)에 대해 젬과 같은 이름으로 초기 설정 파일을 따로 만든다.
+  예를 들어 CarrierWave에 대한 설정은 `carrierwave.rb`에 저장하고, Active
+  Admin에 대한 설정은 `active_admin.rb`에 저장한다.
 <sup>[[link](#gem-initializers)]</sup>
 
 * <a name="dev-test-prod-configs"></a>
@@ -209,7 +208,7 @@
   ```
 
 * <a name="no-match-routes"></a>
-  `match` 메소드를 통한 라우트는 `[:get, :post, :patch, :put, :delete]` 중 두 종류이상의 요청을 액션에 맵핑할 필요가 있는 경우에만 `via` 옵션과 함께 사용하고, 그 외에는 사용하지 않는다.
+  `match` 메소드를 통한 라우트는 `[:get, :post, :patch, :put, :delete]` 중 두 종류 이상의 요청을 액션에 맵핑할 필요가 있는 경우에만 `via` 옵션과 함께 사용하고, 그 외에는 사용하지 않는다.
 <sup>[[link](#no-match-routes)]</sup>
 
 ## 컨트롤러(Controllers)
@@ -220,7 +219,7 @@
 <sup>[[link](#skinny-controllers)]</sup>
 
 * <a name="one-method"></a>
-  각 컨트롤러의 액션은 (원칙적으로는) 초기 검색과 생성을 재외하고 단 하나의 메소드만을 호출해야한다.
+  각 컨트롤러의 액션은 (원칙적으로는) 초기 검색과 생성을 제외하고 단 하나의 메소드만을 호출해야한다.
 <sup>[[link](#one-method)]</sup>
 
 * <a name="shared-instance-variables"></a>
@@ -335,7 +334,7 @@ render status: :forbidden
   생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 메소드를
   모델에서 사용하지 않는다. 그러한 메소드들은 대부분 뷰 층에서만 사용되기
   때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과
-  데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
+  데이터-영속성(persistance)과 관련이 있을 경우에만 사용하도록 하자.
 <sup>[[link](#model-business-logic)]</sup>
 
 
@@ -474,8 +473,8 @@ render status: :forbidden
   ```
 
 * <a name="custom-validator-file"></a>
-  사용자정의 검증(validation)을 한 번 이상 사용하거나 정규표현식을 사용한다면,
-  사용자정의 검증을 담은 파일을 작성한다.
+  사용자 정의 검증(validation)을 한 번 이상 사용하거나 정규표현식을 사용한다면,
+  사용자 정의 검증을 담은 파일을 작성한다.
 <sup>[[link](#custom-validator-file)]</sup>
 
   ```Ruby
@@ -501,7 +500,7 @@ render status: :forbidden
 
 * <a name="custom-validators-gem"></a>
   여러 애플리케이션에서 사용되거나, 범용적인 사용자 정의 validator를 공유 젬으로
-  만드는것을 고려해본다.
+  만드는 것을 고려한다.
 <sup>[[link](#custom-validators-gem)]</sup>
 
 * <a name="named-scopes"></a>
@@ -520,7 +519,7 @@ render status: :forbidden
 * <a name="named-scope-class"></a>
   매개변수가 있는 람다 함수로 만들어진 이름 있는 스코프가 너무 복잡해질 때는
   이름 있는 스코프처럼 `ActiveRecord::Relation`을 반환하는 클래스 메소드를
-  정의하는 것을 고려해볼만 하다. 분명 아래와 같이 더 단순하게 스코프를 정의할
+  정의하는 것을 고려해볼 만 하다. 분명 아래와 같이 더 단순하게 스코프를 정의할
   수 있을 것이다.
 <sup>[[link](#named-scope-class)]</sup>
 
@@ -797,9 +796,10 @@ render status: :forbidden
   ```
 
   테이블의 기본 설정 값을 레일스 애플리케이션에서만 지정하는 것은 많은 레일스
-  개발자들이 사용하지만, 이는 데이터를 어플리케이션 버그에 취약하게하는 아주
+  개발자들이 사용하지만, 이는 데이터를 어플리케이션 버그에 취약하게 만드는 아주
   불안정한 접근방법이다. 그리고 대부분의 중요한 애플리케이션들은 하나의
-  데이터베이스를 다른 애플리케이션과 공유하기 때문에, 레일스 애플리케이션을 통해  데이터 무결성을 보장하는 것은 불가능하다는 사실을 고려해야한다.
+  데이터베이스를 다른 애플리케이션과 공유하기 때문에, 레일스 애플리케이션을 통해
+  데이터 무결성을 보장하는 것은 불가능하다는 사실을 고려해야한다.
 
 * <a name="foreign-key-constraints"></a>식
   외래키 제약을 사용한다. 레일스 4.2부터 엑티브 레코드는 외래키 제약을
@@ -971,7 +971,7 @@ render status: :forbidden
 [에셋 파이프라인](http://guides.rubyonrails.org/asset_pipeline.html)을 사용하라. 이는 애플리케이션 배포에 필요한 에셋 파일들을 조직해줄 것이다.
 
 * <a name="reserve-app-assets"></a>
-  커스텀 스타일시트, 자바스크립트, 이미지는 `app/assets` 디렉터리 아래에 저장한다.
+  사용자 정의 스타일시트, 자바스크립트, 이미지는 `app/assets` 디렉터리 아래에 저장한다.
 <sup>[[link](#reserve-app-assets)]</sup>
 
 * <a name="lib-assets"></a>
@@ -1045,7 +1045,7 @@ render status: :forbidden
   ```
 
 * <a name="url-not-path-in-email"></a>
-  이메일에 사이트의 링크를 넣고 싶을 떄엔 항상 `_path` 대신 `_url` 메소드를 사용한다.
+  이메일에 사이트의 링크를 넣고 싶을 때엔 항상 `_path` 대신 `_url` 메소드를 사용한다.
   `_url` 메소드는 호스트 이름을 같이 반환하고,  `_path` 메소드는 그렇지 않다.
 <sup>[[link](#url-not-path-in-email)]</sup>
 
@@ -1099,7 +1099,8 @@ render status: :forbidden
 
 * <a name="background-email"></a>
   컨트롤러에서 요청에 대한 응답을 처리하는 도중에 이메일을 보내서는 안 된다.
-  이는 페이지 로딩을 지연시키고, 여러 메일을 동시에 발송할 때 타임아웃이 될 수도  있다. 이메일 전송은 [sidekiq](https://github.com/mperham/sidekiq)과 같은
+  이는 페이지 로딩을 지연시키고, 여러 메일을 동시에 발송할 때 타임아웃이 될 수도
+  있다. 이메일 전송은 [sidekiq](https://github.com/mperham/sidekiq)과 같은
   백그라운드 작업을 지원하는 젬을 사용해 이루어져야 한다.
 <sup>[[link](#background-email)]</sup>
 
