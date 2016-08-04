@@ -3,12 +3,15 @@
 > 롤 모델이 중요하다. <br/>
 > -- Officer Alex J. Murphy / RoboCop
 
-이 가이드는 루비 온 레일즈 4 개발을 위한 베스트 프렉티스와 코딩 스타일 규칙을 전달하고자 작성되었으며,
-커뮤니티 기반 [루비 코딩 스타일 가이드](https://github.com/bbatsov/ruby-style-guide)를 보완하는 가이드입니다.
+이 가이드는 루비 온 레일스 4 개발을 위한 베스트 프렉티스와 코딩 스타일
+규칙을 전달하고자 작성되었으며,
+커뮤니티 기반 [루비 코딩 스타일 가이드](https://github.com/bbatsov/ruby-style-guide)를
+보완하는 가이드입니다.
 
-여기서 작성된 일부 예제들은 레일즈 4.0 이상의 버전에서만 적용될 수 있으니 참고하세요.
+일부 예제는 레일스 4.0 이상의 버전에서만 적용될 수 있습니다.
 
-[Pandoc](http://pandoc.org/)를 사용해서 이 가이드를 PDF나 HTML형식으로 변환할 수 있습니다.
+[Pandoc](http://pandoc.org/)를 사용해서 이 가이드를 PDF나 HTML형식으로 변환할
+수 있습니다.
 
 이 가이드는 다음 언어들로 번역되어있습니다.
 
@@ -19,14 +22,22 @@
 * [Russian](https://github.com/arbox/rails-style-guide/blob/master/README-ruRU.md)
 * [Turkish](https://github.com/tolgaavci/rails-style-guide/blob/master/README-trTR.md)
 * [Korean](https://github.com/pureugong/rails-style-guide/blob/master/README-koKR.md)
+* [Vietnamese](https://github.com/CQBinh/rails-style-guide/blob/master/README-viVN.md)
 
-# 레일즈 스타일 가이드
+# 레일스 스타일 가이드
 
-이 가이드는 다른 레일즈 개발자들과 함께 유지보수 가능한 코드를 작성할 수 있도록 베스트 프렉티스를 적용할 것을 권장합니다. 아래의 내용들은 실제 사용방법을 반영하기 때문에, 너무 이상적으로 만들어져 적용이 어렵다고 느낀다면 내용이 아무리 좋다고 하더라도 적용하지 않는 것이 좋습니다.
+이 가이드는 레일스 개발자가 코드를 작성할 때, 다른 레일스 개발자들도 유지보수
+가능하도록, 베스트 프렉티스를 적용할 것을 권장합니다. 실제 사용방법을 반영하는
+가이드와 너무 이상적으로 만들어져 사람들이 생각하기에 적용이 어렵다고 느껴지는
+가이드가 있다면, 내용이 아무리 좋다고 하더라도 적용하지 않는 것이 좋습니다.
 
-이 가이드는 서로 관련있는 규칙들을 섹션들로 나누었고, (자명한 것을 제외하고는) 규칙을 적용해야 하는 근거를 덧붙이려 노력하였습니다.
+이 가이드는 서로 관련있는 규칙들을 섹션들로 나누었고, (자명한 것을 제외하고는)
+규칙을 적용해야 하는 근거를 덧붙이려 노력하였습니다.
 
-이 모든 규칙들이 하루 아침에 만들어지지는 않았습니다. 대부분의 규칙은 저의 소프트웨어 엔지니어로서의 수많은 경험과 레일즈 커뮤니티의 피드백과 제안을 비롯해 높은 평가를 받고 있는 레일즈 프로그래밍 리소스들을 기반으로 만들어졌습니다.
+이 모든 규칙들이 하루 아침에 만들어지지는 않았습니다. 대부분의 규칙은 저의
+소프트웨어 엔지니어로서의 수많은 경험과 레일스 커뮤니티의 피드백과 제안을
+비롯해 높은 평가를 받고 있는 레일스 프로그래밍 리소스들을 기반으로
+만들어졌습니다.
 
 ## 목차
 
@@ -51,17 +62,19 @@
 <a name="configuration"></a>
 
 * <a name="config-initializers"></a>
-  초기 설정 코드는 `config/initializers` 아래에 둔다. 이 코드들은 애플리케이션이 처음 구동될 때 실행된다.
+  사용자정의 초기 설정은 `config/initializers`에 둔다. 여기에 있는 코드들은
+  애플리케이션이 처음 구동될 때 실행된다.
 <sup>[[link](#config-initializers)]</sup>
 
 * <a name="gem-initializers"></a>
-  젬(gem)별로 각각의 초기 설정 파일은 젬과 같은 이름을 사용하여 작성한다.
-  예를 들어 CarrierWave에 대한 설정은 `carrierwave.rb`에 저장하고,
+  각각의 젬(gem)에 대해 초기 설정 파일을 따로 만들고, 젬과 같은 이름을 사용하여
+  작성한다. 예를 들어 CarrierWave에 대한 설정은 `carrierwave.rb`에 저장하고,
   Active Admin에 대한 설정은 `active_admin.rb`에 저장한다.
 <sup>[[link](#gem-initializers)]</sup>
 
 * <a name="dev-test-prod-configs"></a>
-  개발(development), 테스트(test) 그리고 배포(production) 환경에 대한 설정들은 `config/environments/`아래에 각 환경의 이름으로 구분하여 저장한다.
+  개발(development), 테스트(test) 그리고 배포(production) 환경에 대한 설정들은
+  `config/environments/`아래에 각 환경의 이름으로 구분하여 저장한다.
 <sup>[[link](#dev-test-prod-configs)]</sup>
 
   * 사전 컴파일해야하는 파일은 추가적인 에셋으로 표시한다.
@@ -78,14 +91,14 @@
 <sup>[[link](#app-config)]</sup>
 
 * <a name="staging-like-prod"></a>
-  실제 배포 환경과 아주 유사한 'staging' 환경을 추가로 만든다.
+  실제 `production` 환경과 아주 유사한 `staging` 환경을 추가로 만든다.
 <sup>[[link](#staging-like-prod)]</sup>
 
 * <a name="yaml-config"></a>
-  그 외의 설정들은 'config/'디렉토리 아래의 YAML파일을 만들어 저장한다.
+  그 외의 설정들은 `config/` 디렉토리 아래의 YAML파일을 만들어 저장한다.
 <sup>[[link](#yaml-config)]</sup>
 
-  레일즈 4.2에 새로 추가된 `config_for` 메소드를 통해 YAML 설정 파일들은 쉽게 읽어들일 수 있다.
+  레일스 4.2부터 추가된 `config_for` 메소드를 통해 YAML 설정 파일들은 쉽게 읽어들일 수 있다.
 
   ```Ruby
   Rails::Application.config_for(:yaml_file)
@@ -95,7 +108,8 @@
 <a name="routing"></a>
 
 * <a name="member-collection-routes"></a>
-  RESTful 리소스에 더 많은 액션을 추가할 필요가 있다면 (정말로 그게 다 필요한가?) `member` 와 `collection` 라우트를 사용한다.
+  RESTful 리소스에 더 많은 액션을 추가할 필요가 있다면 (정말로 그게 다
+  필요한가?) `member` 와 `collection` 라우트를 사용한다.
 <sup>[[link](#member-collection-routes)]</sup>
 
   ```Ruby
@@ -119,8 +133,7 @@
   ```
 
 * <a name="many-member-collection-routes"></a>
-  여러 개의 'member/collection' 라우트를 정의해야 한다면
-  block 문법을 대신 사용한다.
+  여러 `member/collection` 라우트를 정의해야 한다면 블록 구문을 사용한다.
 <sup>[[link](#many-member-collection-routes)]</sup>
 
   ```Ruby
@@ -140,7 +153,8 @@
   ```
 
 * <a name="nested-routes"></a>
-  엑티브 레코드(ActiveRecord) 모델 간의 관계를 더 분명하게 표현하기 위해서 중첩 라우트를 사용한다.
+  엑티브 레코드(ActiveRecord) 모델 간의 관계를 더 분명하게 표현하기 위해서 중첩
+  라우트를 사용한다.
 <sup>[[link](#nested-routes)]</sup>
 
   ```Ruby
@@ -172,7 +186,7 @@
   ```
 
 * <a name="namespaced-routes"></a>
-  그룹과 관련된 액션에 대해서는 `namespace`를 사용해 라우트를 작성한다.
+  관련된 액션을 묶기위해 `namespace`를 사용한다.
 <sup>[[link](#namespaced-routes)]</sup>
 
   ```Ruby
@@ -184,8 +198,9 @@
   ```
 
 * <a name="no-wild-routes"></a>
-  오래 전 레일즈에서 사용하던 라우팅 설정(legacy wild controller route)은 절대로 사용하지 않는다.
-  이를 사용하면 GET 요청으로 모든 컨트롤러의 모든 액션(actions)에 접근할 수 있다.
+  예전 레일스에서 사용하던 전역 라우팅 설정(legacy wild controller route)은
+  절대로 사용하지 않는다. 이 라우트는 GET 요청으로 모든 컨트롤러의 모든
+  액션(actions)에 접근할 수 있게 만든다.
 <sup>[[link](#no-wild-routes)]</sup>
 
   ```Ruby
@@ -194,7 +209,7 @@
   ```
 
 * <a name="no-match-routes"></a>
-  `match` 메서드를 통한 라우트는 `[:get, :post, :patch, :put, :delete]` 중 여러 종류의 요청을 하나 이상의 액션에 맵핑할 필요가 있는 경우 ':via' 옵션과 함께 사용하고, 그 외에는 사용하지 않는다.
+  `match` 메소드를 통한 라우트는 `[:get, :post, :patch, :put, :delete]` 중 두 종류이상의 요청을 액션에 맵핑할 필요가 있는 경우에만 `via` 옵션과 함께 사용하고, 그 외에는 사용하지 않는다.
 <sup>[[link](#no-match-routes)]</sup>
 
 ## 컨트롤러(Controllers)
@@ -205,7 +220,7 @@
 <sup>[[link](#skinny-controllers)]</sup>
 
 * <a name="one-method"></a>
-  각 컨트롤러의 액션은 (원칙적으로는) 단 하나의 메소드만을 호출해야한다.
+  각 컨트롤러의 액션은 (원칙적으로는) 초기 검색과 생성을 재외하고 단 하나의 메소드만을 호출해야한다.
 <sup>[[link](#one-method)]</sup>
 
 * <a name="shared-instance-variables"></a>
@@ -213,20 +228,21 @@
 <sup>[[link](#shared-instance-variables)]</sup>
 
 ### 랜더링(Rendering)
+<a name="rendering"></a>
 
 * <a name="inline-rendering"></a>
   인라인(inline) 랜더링보다는 템플릿을 사용한다.
 <sup>[[link](#inline-rendering)]</sup>
 
 ```Ruby
-# 나쁜 예
+# 매우 나쁜 예
 class ProductsController < ApplicationController
   def index
     render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>", type: :erb
   end
 end
 
-# 좋은 예 
+# 좋은 예
 ## app/views/products/index.html.erb
 <%= render partial: 'product', collection: products %>
 
@@ -243,7 +259,7 @@ end
 ```
 
 * <a name="plain-text-rendering"></a>
-  `render text:`보다 `render plain:`을 사용할 것
+  `render text:`대신 `render plain:`을 사용한다.
 <sup>[[link](#plain-text-rendering)]</sup>
 
 ```Ruby
@@ -279,7 +295,8 @@ render status: :forbidden
 ...
 ```
 
-## Models
+## 모델(Models)
+<a name="models"></a>
 
 * <a name="model-classes"></a>
   엑티브 레코드를 사용하지 않는 모델은 자유롭게 사용한다.
@@ -314,7 +331,11 @@ render status: :forbidden
   [RailsCast on the subject](http://railscasts.com/episodes/326-activeattr).
 
 * <a name="model-business-logic"></a>
-  비즈니스 영역(business domain)에서 어떤 의미를 가지고 있지 않는 한, HTML을 생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 매소드를 모델에서 사용하지 말 것. 그러한 매소드들은 대부분 화면에서만 사용되기 때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과 데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
+  비즈니스 영역(business domain)에서 어떤 의미를 가지고 있지 않는 한, HTML을
+  생성하는 코드와 같이 데이터가 화면에서 어떻게 보여질지를 결정하는 메소드를
+  모델에서 사용하지 않는다. 그러한 메소드들은 대부분 뷰 층에서만 사용되기
+  때문에, 헬퍼(helpers)로 구현되어야 한다. 모델은 비즈니스 로직과
+  데이터-영속성(persistance)과 관련하여만 사용하도록 하자.
 <sup>[[link](#model-business-logic)]</sup>
 
 
@@ -322,7 +343,9 @@ render status: :forbidden
 <a name="activerecord"></a>
 
 * <a name="keep-ar-defaults"></a>
-  데이터베이스 소유권을 가지고 있지 않은 경우와 같이 특별한 이유가 있는 게 아니라면 엑티브 레코드의 기본 설정(테이블 이름, 기본키 등)을 가능하면 변경하지 않는다.
+  데이터베이스 소유권을 가지고 있지 않은 경우와 같이 특별한 이유가 있는 게
+  아니라면 엑티브 레코드의 기본 설정(테이블 이름, 기본키 등)을 가능하면
+  변경하지 않는다.
 <sup>[[link](#keep-ar-defaults)]</sup>
 
   ```Ruby
@@ -374,7 +397,8 @@ render status: :forbidden
 
 * <a name="has-many-through"></a>
   `has_and_belongs_to_many`보다 `has_many :through`를 사용한다.
-  `has_many :through` 사용하면 중간 모델(join model)에서 추가적인 속성이나 validation을 사용할 수 있다.
+  `has_many :through` 사용하면 중간 모델(join model)에서 추가적인 속성이나
+  validation을 사용할 수 있다.
 <sup>[[link](#has-many-through)]</sup>
 
   ```Ruby
@@ -450,7 +474,8 @@ render status: :forbidden
   ```
 
 * <a name="custom-validator-file"></a>
-  커스텀 검증(validation)을 한 번 이상 사용하거나 정규표현식을 사용한다면, 커스텀 검증을 담은 파일을 작성한다.
+  사용자정의 검증(validation)을 한 번 이상 사용하거나 정규표현식을 사용한다면,
+  사용자정의 검증을 담은 파일을 작성한다.
 <sup>[[link](#custom-validator-file)]</sup>
 
   ```Ruby
@@ -471,11 +496,12 @@ render status: :forbidden
   end
   ```
 * <a name="app-validators"></a>
-  커스텀 validator는 `app/validators`아래에 둔다.
+  사용자 정의 validator는 `app/validators`아래에 둔다.
 <sup>[[link](#app-validators)]</sup>
 
 * <a name="custom-validators-gem"></a>
-  여러 애플리케이션에서 사용되는 커스텀 validator나 범용적인 validator는 분리해서 젬으로 분리하여 공유한다.
+  여러 애플리케이션에서 사용되거나, 범용적인 사용자 정의 validator를 공유 젬으로
+  만드는것을 고려해본다.
 <sup>[[link](#custom-validators-gem)]</sup>
 
 * <a name="named-scopes"></a>
@@ -492,8 +518,10 @@ render status: :forbidden
   ```
 
 * <a name="named-scope-class"></a>
-  매개변수가 있는 람다 함수로 만들어진 이름 있는 스코프가 너무 복잡해질 때는 이름 있는 스코프와 마찬가지로 `ActiveRecord::Relation`을 반환하는 클래스 메서드를 정의한다. 분명 아래와 같이 단순하게 스코프를 정의할 수 있을 것이다.
-
+  매개변수가 있는 람다 함수로 만들어진 이름 있는 스코프가 너무 복잡해질 때는
+  이름 있는 스코프처럼 `ActiveRecord::Relation`을 반환하는 클래스 메소드를
+  정의하는 것을 고려해볼만 하다. 분명 아래와 같이 더 단순하게 스코프를 정의할
+  수 있을 것이다.
 <sup>[[link](#named-scope-class)]</sup>
 
   ```Ruby
@@ -505,16 +533,19 @@ render status: :forbidden
   ```
 
 * <a name="beware-update-attribute"></a>
-  [`update_attribute`](http://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update_attribute) 메소드의 작동 방법에 대하여 이해해야한다.
-  (`update_attributes`와는 달리) 모델 validation를 실행하지 않기 때문에 모델의 상태에 오류가 발생할 수 있다.
+  [`update_attribute`](http://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update_attribute) 메소드의 동작에 조심해야 한다.
+  (`update_attributes`와는 달리) 모델 validation를 실행하지 않기 때문에 모델의 상태가 손상되기 쉽다.
 <sup>[[link](#beware-update-attribute)]</sup>
 
 * <a name="user-friendly-urls"></a>
-  사용자 친화적인 URL을 사용한다. URL에 'id'보다 모델의 특징을 잘 나타내는 속성을 사용한다.
+  사용자 친화적인 URL을 사용한다. URL에 `id`보다 모델의 특징을 잘 나타내는 속성을 사용한다.
   이를 위한 여러가지 방법들이 있다.
 <sup>[[link](#user-friendly-urls)]</sup>
 
-  * 모델의 'to_param' 메소드를 오버라이드한다. 이 메서드는 레일즈에서 대상 객체에 대한 URL을 생성하기 위해 사용된다. 기본적으로 레코드의 `id`를 String 객체로 반환한다. 이를 오버라이드해서 사람이 읽기 좋은 형식을 사용한다.
+  * 모델의 `to_param` 메소드를 오버라이드한다. 이 메소드는 레일스에서 대상
+    객체에 대한 URL을 생성하기 위해 사용된다. 기본적으로 레코드의 `id`를
+    String 객체로 반환한다. 다른 사람이 읽기 좋은 속성을 포함하도록 오버라이드할
+    수 있다.
 
       ```Ruby
       class Person
@@ -526,7 +557,8 @@ render status: :forbidden
   이 값을 URL에서 사용하려면 문자열에 `parameterize`를 호출해야한다.
   객체의 id가 앞부분에 있어야만 엑티브 레코드의 `find` 메소드로 찾을 수 있다.
 
-  * `friendly_id` 젬을 사용한다. 이를 사용하면 `id` 대신에 모델의 특징을 잘 반영한 속성들을 사용해 사람이 읽기 쉬운 URL을 만들 수 있다.
+  * `friendly_id` 젬을 사용한다. 이를 사용하면 `id` 대신에 모델의 특징을 잘
+    반영한 속성들을 사용해 사람이 읽기 쉬운 URL을 만들 수 있다.
 
       ```Ruby
       class Person
@@ -535,11 +567,15 @@ render status: :forbidden
       end
       ```
 
-  사용법에 대한 더 많은 정보는 [문서](https://github.com/norman/friendly_id)를 참고하기 바란다.
+  사용법에 대한 더 많은 정보는 [문서](https://github.com/norman/friendly_id)를
+  참고하기 바란다.
 
 * <a name="find-each"></a>
   엑티브 레코드 객체의 컬렉션을 반복할 때는 `find_each`를 사용한다.
-  (예를 들면 `all` 메서드를 사용해) 데이터베이스에서 가져온 레코드 컬렉션에 대해서 반복 작업을 수행하는 일은 매우 비효율적이다. 이 때는 배치 작업(batch process) 메소드를 통해 레코드들이 배치에서 처리되도록 하면 메모리 소비를 줄일 수 있다.
+  (예를 들면 `all` 메소드를 사용해) 데이터베이스에서 가져온 레코드 컬렉션에
+  대해서 반복 작업을 수행하는 일은 모든 객체의 객체화를 한 번에 하기 때문에 매우
+  비효율적이다. 이 때는 배치 작업(batch process) 메소드를 통해 레코드들이
+  배치에서 처리되도록 하면 메모리 소비를 크게 줄일 수 있다.
 <sup>[[link](#find-each)]</sup>
 
   ```Ruby
@@ -563,8 +599,9 @@ render status: :forbidden
   ```
 
 * <a name="before_destroy"></a>
-  [레일즈는 모델 의존 관계에 대한 콜백을 생성하기](https://github.com/rails/rails/issues/3458) 때문에, 항상
-  `prepend: true'` validation을 수행하는 `before_destroy` 콜백을 호출한다.
+  [레일스는 모델 의존 관계에 대한 콜백을
+  생성하기](https://github.com/rails/rails/issues/3458) 때문에, 항상
+  validation을 수행하는 `before_destroy` 콜백은 `prepend: true`와 함께 호출한다.
 <sup>[[link](#before_destroy)]</sup>
 
   ```Ruby
@@ -602,6 +639,39 @@ render status: :forbidden
   end
   ```
 
+* <a name="save-bang"></a>
+  AR 객체를 남길 때에는 항상 예외가 발생하는 느낌표! 메소드를 사용하거나 반환
+  값을 처리한다. 이는 `create`, `save`, `update`, `destroy`, `first_or_create`,
+  `find_or_create_by`에 적용된다.
+<sup>[[link](#save-bang)]</sup>
+
+  ```Ruby
+  # 나쁜 예
+  user.create(name: 'Bruce')
+
+  # 나쁜 예
+  user.save
+
+  # 좋은 예
+  user.create!(name: 'Bruce')
+  # 또는
+  bruce = user.create(name: 'Bruce')
+  if bruce.persisted?
+    ...
+  else
+    ...
+  end
+
+  # 좋은 예
+  user.save!
+  # 또는
+  if user.save
+    ...
+  else
+    ...
+  end
+  ```
+
 ### 엑티브 레코드 쿼리(ActiveRecord Queries)
 <a name="activerecord-queries"></a>
 
@@ -619,7 +689,7 @@ render status: :forbidden
 
 * <a name="named-placeholder"></a>
   쿼리에 하나 이상의 플레이스홀더를 사용할 때는
-  위치로 구분되는 플레이스홀더 대신 이름을 붙여 사용한다.
+  위치로 구분되는 플레이스홀더 대신 이름을 붙여 사용하는 것을 고려해본다.
 <sup>[[link](#named-placeholder)]</sup>
 
   ```Ruby
@@ -683,7 +753,7 @@ render status: :forbidden
 <sup>[[link](#squished-heredocs)]</sup>
 
   ```Ruby
-  User.find_by_sql(<<SQL.squish)
+  User.find_by_sql(<<-SQL.squish)
     SELECT
       users.id, accounts.plan
     FROM
@@ -726,10 +796,14 @@ render status: :forbidden
   end
   ```
 
-  테이블의 기본 설정 값을 레일즈 애플리케이션에서만 지정하는 것은 많은 레일즈 개발자들이 제안한 방법이지만, 이는 데이터를 많은 어플리케이션 버그에 노출시키는 아주 불안정한 접근방법이다. 그리고 대부분의 중요한 애플리케이션들은 하나의 데이터베이스를 다른 애플리케이션과 공유하기 때문에, 레일즈 애플리케이션을 통해 데이터 무결성을 보장하는 것은 불가능하다는 사실을 고려해야한다.
+  테이블의 기본 설정 값을 레일스 애플리케이션에서만 지정하는 것은 많은 레일스
+  개발자들이 사용하지만, 이는 데이터를 어플리케이션 버그에 취약하게하는 아주
+  불안정한 접근방법이다. 그리고 대부분의 중요한 애플리케이션들은 하나의
+  데이터베이스를 다른 애플리케이션과 공유하기 때문에, 레일스 애플리케이션을 통해  데이터 무결성을 보장하는 것은 불가능하다는 사실을 고려해야한다.
 
 * <a name="foreign-key-constraints"></a>식
-  외래키 제약을 사용한다. 레일즈 4.2부터 엑티브 레코드는 외래키 제약을 기본적으로 지원한다.
+  외래키 제약을 사용한다. 레일스 4.2부터 엑티브 레코드는 외래키 제약을
+  기본적으로 지원한다.
   <sup>[[link](#foreign-key-constraints)]</sup>
 
 * <a name="change-vs-up-down"></a>
@@ -757,8 +831,32 @@ render status: :forbidden
   ```
 
 * <a name="no-model-class-migrations"></a>
-  마이그레이션에서 모델 클래스를 사용하지 않는다. 모델 클래스들은 계속해서 변하기 때문에, 마이그레이션에서 사용한 모델이 변화하게 되면 마이그레이션 작업이 정상적으로 수행되지 않을 수 있다.
+  마이그레이션에서 모델 클래스를 사용하지 않는다. 모델 클래스들은 계속해서
+  변하기 때문에, 마이그레이션에서 사용한 모델이 변화하게 되면 마이그레이션
+  작업이 정상적으로 수행되지 않을 수 있다.
 <sup>[[link](#no-model-class-migrations)]</sup>
+
+* <a name="meaningful-foreign-key-naming"></a>
+  레일즈의 자동생성된 외래 키 이름 대신 외래 키 이름을 명시적으로 지정한다.
+  (http://edgeguides.rubyonrails.org/active_record_migrations.html#foreign-keys)
+
+  ```Ruby
+  # 나쁜 예
+  class AddFkArticlesToAuthors < ActiveRecord::Migration
+    def change
+      add_foreign_key :articles, :authors
+    end
+  end
+
+  # 좋은 예
+  class AddFkArticlesToAuthors < ActiveRecord::Migration
+    def change
+      add_foreign_key :articles, :authors, name: :articles_author_id_fk
+    end
+  end
+  ```
+
+<sup>[[link](#meaningful-foreign-key-naming)]</sup>
 
 ## 뷰(Views)
 <a name="views"></a>
@@ -779,11 +877,14 @@ render status: :forbidden
 <a name="internationalization"></a>
 
 * <a name="locale-texts"></a>
-  뷰, 모델, 컨트롤러에서는 지역(locale) 관련 설정이나 문자열을 바로 사용하지 않는다. 이러한 문자열들은 `config/locales` 디렉터리 아래의 로케일 파일로 옮겨 관리한다.
+  뷰, 모델, 컨트롤러에서는 지역(locale) 관련 설정이나 문자열을 바로 사용하지
+  않는다. 이러한 문자열들은 `config/locales` 디렉터리 아래의 로케일 파일로 옮겨
+  관리한다.
 <sup>[[link](#locale-texts)]</sup>
 
 * <a name="translated-labels"></a>
-  엑티브 레코드 모델의 레이블에 대한 번역이 필요할 때는 'activerecord' 아래에 작성한다.
+  엑티브 레코드 모델의 레이블에 대한 번역이 필요할 때는 `activerecord` 스코프
+  아래에 작성한다.
 <sup>[[link](#translated-labels)]</sup>
 
   ```
@@ -796,7 +897,7 @@ render status: :forbidden
           name: 'Full name'
   ```
 
-  이 때 `User.model_name.human`은 `Member`를 반환하고
+  이 때 `User.model_name.human`은 "Member"를 반환하고
   `User.human_attribute_name("name")`은 "Full name"을 반환한다.
   이러한 속성들에 대한 번역은 뷰에서 레이블로 사용된다.
 
@@ -806,7 +907,9 @@ render status: :forbidden
   뷰에서 사용하는 텍스트는 `locales/views`에 저장한다.
 <sup>[[link](#organize-locale-files)]</sup>
 
-  * 로케일(locale) 파일들을 적절한 위치에 저장하기 위해 디렉터리를 추가로 만들었다면, 이 파일들을 읽어들일 수 있도록 `application.rb` 파일에 설정해야 한다.
+  * 로케일(locale) 파일들을 적절한 위치에 저장하기 위해 디렉터리를 추가로
+    만들었다면, 이 파일들을 읽어들일 수 있도록 `application.rb` 파일에 설정해야
+    한다.
 
       ```ruby
       # config/application.rb
@@ -858,7 +961,7 @@ render status: :forbidden
   ```
 
 * <a name="i18n-guides"></a>
-  레일즈 I18n과 관련된 더 자세한 정보는 [레일즈 가이드(Rails
+  레일스 I18n과 관련된 더 자세한 정보는 [레일스 가이드(Rails
   Guides)](http://guides.rubyonrails.org/i18n.html)를 참고하라.
 <sup>[[link](#i18n-guides)]</sup>
 
@@ -877,7 +980,7 @@ render status: :forbidden
 
 * <a name="vendor-assets"></a>
   [jQuery](http://jquery.com/)나
-  [bootstrap](http://twitter.github.com/bootstrap/)와 같은 
+  [bootstrap](http://twitter.github.com/bootstrap/) 같은
   서드파티 라이브러리는 `vendor/assets`에 둔다.
 <sup>[[link](#vendor-assets)]</sup>
 
@@ -893,7 +996,7 @@ render status: :forbidden
 <a name="mailers"></a>
 
 * <a name="mailer-name"></a>
-  메일러의 이름은 'SomethingMailer' 형식을 따른다.
+  메일러의 이름은 `SomethingMailer` 형식을 따른다.
   이러한 접미사가 없다면 메일러 클래스인지 바로 파악하기가 어렵고, 어떠한 뷰에 연결되어 있는지 찾아내기 어렵다.
 <sup>[[link](#mailer-name)]</sup>
 
@@ -942,7 +1045,7 @@ render status: :forbidden
   ```
 
 * <a name="url-not-path-in-email"></a>
-  이메일에 사이트의 링크를 넣고 싶다면 `_path` 대신 `_url` 메소드를 사용한다.
+  이메일에 사이트의 링크를 넣고 싶을 떄엔 항상 `_path` 대신 `_url` 메소드를 사용한다.
   `_url` 메소드는 호스트 이름을 같이 반환하고,  `_path` 메소드는 그렇지 않다.
 <sup>[[link](#url-not-path-in-email)]</sup>
 
@@ -986,7 +1089,8 @@ render status: :forbidden
   ```
 
 * <a name="inline-email-styles"></a>
-  html 형식의 이메일을 전송할 때, 일부 클라이언트에서는 외부 스타일시트를 참조할 때 문제가 발생할 수 있기 때문에 css는 모두 인라인으로 작성되어야 한다.
+  html 형식의 이메일을 전송할 때, 일부 클라이언트에서는 외부 스타일시트를 참조할
+  때 문제가 발생할 수 있기 때문에 css는 모두 인라인으로 작성되어야 한다.
   하지만 인라인 스타일을 사용하면 유지보수가 힘들고 코드 중복이 발생하게 된다.
   스타일과 html을 자동적으로 결합해주는 아래 두 가지 젬이 존재한다.
   [premailer-rails](https://github.com/fphilipe/premailer-rails)와
@@ -995,18 +1099,19 @@ render status: :forbidden
 
 * <a name="background-email"></a>
   컨트롤러에서 요청에 대한 응답을 처리하는 도중에 이메일을 보내서는 안 된다.
-  이는 페이지 로딩을 지연시키고, 여러 메일을 동시에 발송할 때 타임아웃이 될 수도 있다.
-  이메일 전송은 [sidekiq](https://github.com/mperham/sidekiq)과 같은 백그라운드 작업을 지원하는 젬을 사용해 이루어져야 한다.
+  이는 페이지 로딩을 지연시키고, 여러 메일을 동시에 발송할 때 타임아웃이 될 수도  있다. 이메일 전송은 [sidekiq](https://github.com/mperham/sidekiq)과 같은
+  백그라운드 작업을 지원하는 젬을 사용해 이루어져야 한다.
 <sup>[[link](#background-email)]</sup>
 
 ## 액티브 서포트 코어 확장(Active Support Core Extensions)
+<a name="active-support-core-extensions"></a>
 
 * <a name="try-bang"></a>
   `ActiveSupport#try!`보단 루비 2.3의 안전한 내비게이션 연산자인 `&.`을 사용하자
 <sup>[[link](#try-bang)]</sup>
 
 ```ruby
-# 나쁜 예 
+# 나쁜 예
 obj.try! :fly
 
 # 좋은 예
@@ -1163,18 +1268,19 @@ pets.include? 'cat'
 
 # 리소스
 
-레일즈 스타일과 관련된 반드시 읽어야할 훌륭한 자료들이 더 많이 있다. 아래 자료들을 참고해주세요.
+레일스 스타일과 관련된 반드시 읽어야할 훌륭한 자료들이 더 많이 있다. 아래 자료들을 참고해주세요.
 
 * [The Rails 4 Way](http://www.amazon.com/The-Rails-Addison-Wesley-Professional-Ruby/dp/0321944275)
 * [Ruby on Rails Guides](http://guides.rubyonrails.org/)
 * [The RSpec Book](http://pragprog.com/book/achbd/the-rspec-book)
 * [The Cucumber Book](http://pragprog.com/book/hwcuc/the-cucumber-book)
 * [Everyday Rails Testing with RSpec](https://leanpub.com/everydayrailsrspec)
+* [Rails 4 Test Prescriptions](https://pragprog.com/book/nrtest2/rails-4-test-prescriptions)
 * [Better Specs for RSpec](http://betterspecs.org)
 
 # 기여하기
 
-이 문서는 아직 완성된 것이 아닙니다. 저는 이 가이드를 레일즈 코딩 스타일에 관심이 있는  사람들과 함께 만들어 가면서, 모든 루비 커뮤니티에 유용한 자료가 되었으면 합니다.
+이 문서는 아직 완성된 것이 아닙니다. 저는 이 가이드를 레일스 코딩 스타일에 관심이 있는  사람들과 함께 만들어 가면서, 모든 루비 커뮤니티에 유용한 자료가 되었으면 합니다.
 
 가이드 개선을 위한 풀리퀘스트(pull requests)를 마음껏 보내주세요. 이에 대해 미리 감사의 말씀을 드립니다.
 
