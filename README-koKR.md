@@ -790,8 +790,17 @@ render status: :forbidden
 
   ```Ruby
   # 나쁜 예 - 애플리케이션에서 기본설정 값을 지정하는 예
-  def amount
-    self[:amount] or 0
+  class Product < ActiveRecord::Base
+    def amount
+      self[:amount] || 0
+    end
+  end
+
+  # 좋은 예 - 디비에서 지정
+  class AddDefaultAmountToProducts < ActiveRecord::Migration
+    def change
+      change_column :products, :amount, :integer, default: 0
+   end
   end
   ```
 
@@ -839,6 +848,7 @@ render status: :forbidden
 * <a name="meaningful-foreign-key-naming"></a>
   레일즈의 자동생성된 외래 키 이름 대신 외래 키 이름을 명시적으로 지정한다.
   (http://edgeguides.rubyonrails.org/active_record_migrations.html#foreign-keys)
+<sup>[[link](#meaningful-foreign-key-naming)]</sup>
 
   ```Ruby
   # 나쁜 예
@@ -855,8 +865,6 @@ render status: :forbidden
     end
   end
   ```
-
-<sup>[[link](#meaningful-foreign-key-naming)]</sup>
 
 ## 뷰(Views)
 <a name="views"></a>
