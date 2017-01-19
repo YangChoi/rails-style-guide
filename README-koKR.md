@@ -531,10 +531,28 @@ render status: :forbidden
   end
   ```
 
-* <a name="beware-update-attribute"></a>
-  [`update_attribute`](http://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update_attribute) 메소드의 동작에 조심해야 한다.
-  (`update_attributes`와는 달리) 모델 validation를 실행하지 않기 때문에 모델의 상태가 손상되기 쉽다.
-<sup>[[link](#beware-update-attribute)]</sup>
+* <a name="beware-skip-model-validations"></a>
+  [다음](http://guides.rubyonrails.org/active_record_validations.html#skipping-validations)
+  메소드의 동작에 조심해야 한다. 이들은 모델 유효성 검증을 하지 않으므로,
+  간단하게 모델의 상태가 손상될 수 있다.
+<sup>[[link](#beware-skip-model-validations)]</sup>
+
+  ```Ruby
+  # 나쁜 예
+  Article.first.decrement!(:view_count)
+  DiscussionBoard.decrement_counter(:post_count, 5)
+  Article.first.increment!(:view_count)
+  DiscussionBoard.increment_counter(:post_count, 5)
+  person.toggle :active
+  product.touch
+  Billing.update_all("category = 'authorized', author = 'David'")
+  user.update_attribute(website: 'example.com')
+  user.update_columns(last_request_at: Time.current)
+  Post.update_counters 5, comment_count: -1, action_count: 1
+
+  # 좋은 예
+  user.update_attributes(website: 'example.com')
+  ```
 
 * <a name="user-friendly-urls"></a>
   사용자 친화적인 URL을 사용한다. URL에 `id`보다 모델의 특징을 잘 나타내는 속성을 사용한다.
@@ -799,7 +817,7 @@ render status: :forbidden
   # 좋은 예 - 디비에서 지정
   class AddDefaultAmountToProducts < ActiveRecord::Migration
     def change
-      change_column :products, :amount, :integer, default: 0
+      change_column_default :products, :amount, 0
    end
   end
   ```
@@ -839,15 +857,68 @@ render status: :forbidden
   end
   ```
 
-* <a name="no-model-class-migrations"></a>
-  마이그레이션에서 모델 클래스를 사용하지 않는다. 모델 클래스들은 계속해서
-  변하기 때문에, 마이그레이션에서 사용한 모델이 변화하게 되면 마이그레이션
-  작업이 정상적으로 수행되지 않을 수 있다.
-<sup>[[link](#no-model-class-migrations)]</sup>
+* <a name="define-model-class-migrations"></a>
+  마이그레이션에서 모델을 사용해야 한다면, 이를 정의해서 나중에 마이그레이션이
+  깨지지 않게 만들어라.
+<sup>[[link](#define-model-class-migrations)]</sup>
+
+  ```Ruby
+  # db/migrate/<migration_file_name>.rb
+  # frozen_string_literal: true
+
+  # 나쁜 예
+  class ModifyDefaultStatusForProducts < ActiveRecord::Migration
+    def change
+      old_status = 'pending_manual_approval'
+      new_status = 'pending_approval'
+
+      reversible do |dir|
+        dir.up do
+          Product.where(status: old_status).update_all(status: new_status)
+          change_column :products, :status, :string, default: new_status
+        end
+
+        dir.down do
+          Product.where(status: new_status).update_all(status: old_status)
+          change_column :products, :status, :string, default: old_status
+        end
+      end
+    end
+  end
+
+  # 좋은 예
+  # 임의의 클래스에 `table_name`으로 정의하여 마이그레이션 생성시에 가지고
+  # 있었던 그 테이블을 사용할 수 있게 하라.
+  # 미래에 `Product` 클래스를 오버라이드하고, `table_name`을 바꾸게 되더라도
+  # 이 코드는 마이그레이션을 실행하더라도 문제가 없으며 심각한 데이터 손상을
+  # 야기하지도 않는다.
+  class MigrationProduct < ActiveRecord::Base
+    self.table_name = :products
+  end
+
+  class ModifyDefaultStatusForProducts < ActiveRecord::Migration
+    def change
+      old_status = 'pending_manual_approval'
+      new_status = 'pending_approval'
+
+      reversible do |dir|
+        dir.up do
+          MigrationProduct.where(status: old_status).update_all(status: new_status)
+          change_column :products, :status, :string, default: new_status
+        end
+
+        dir.down do
+          MigrationProduct.where(status: new_status).update_all(status: old_status)
+          change_column :products, :status, :string, default: old_status
+        end
+      end
+    end
+  end
+  ```
 
 * <a name="meaningful-foreign-key-naming"></a>
   레일즈의 자동생성된 외래 키 이름 대신 외래 키 이름을 명시적으로 지정한다.
-  (http://edgeguides.rubyonrails.org/active_record_migrations.html#foreign-keys)
+  (http://guides.rubyonrails.org/active_record_migrations.html#foreign-keys)
 <sup>[[link](#meaningful-foreign-key-naming)]</sup>
 
   ```Ruby
@@ -862,6 +933,45 @@ render status: :forbidden
   class AddFkArticlesToAuthors < ActiveRecord::Migration
     def change
       add_foreign_key :articles, :authors, name: :articles_author_id_fk
+    end
+  end
+  ```
+
+* <a name="reversible-migration"></a>
+  `change` 메소드에서는 불가역한 마이그레이션 명령을 사용하지 말라.
+  가역적인 마이그레이션 명령은 다음에서 확인할 수 있다.
+  [ActiveRecord::Migration::CommandRecorder](http://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html)
+<sup>[[link](#reversible-migration)]</sup>
+
+  ```ruby
+  # 나쁜 예
+  class DropUsers < ActiveRecord::Migration
+    def change
+      drop_table :users
+    end
+  end
+
+  # 좋은 예
+  class DropUsers < ActiveRecord::Migration
+    def up
+      drop_table :users
+    end
+
+    def down
+      create_table :users do |t|
+        t.string :name
+      end
+    end
+  end
+
+  # 좋은 예
+  # 여기에서 블럭은 롤백에서 create_table을 사용한다.
+  # http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters.html#method-i-drop_table
+  class DropUsers < ActiveRecord::Migration
+    def change
+      drop_table :users do |t|
+        t.string :name
+      end
     end
   end
   ```
